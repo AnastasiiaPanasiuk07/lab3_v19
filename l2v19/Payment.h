@@ -21,9 +21,9 @@ private:
 	double withheldAmount = 0.0;// Утримана сума
 
 public:
-	Payment();
+	Payment(); // Конструктор за замовчуванням
 	Payment(std::string lastName, std::string firstName, std::string middleName, double salary, int startYear, double bonusPercent, int workedDays, int totalWorkingDays, double taxPercent = 13.0);
-	Payment(Payment& p);   // Конструктор копіювання                                                                                   // Конструктор копіювання
+	Payment(Payment& p);   // Конструктор копіювання 
 	~Payment(); // Деструктор
 
 	void Init(std::string lastName, std::string firstName, std::string middleName, double salary, int startYear, double bonusPercent, int workedDays, int totalWorkingDays, double taxPercent = 13.0);

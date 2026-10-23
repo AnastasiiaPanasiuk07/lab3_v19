@@ -127,3 +127,8 @@ void Payment::Display() const
 {
     std::cout << this->toString();
 }
+
+Payment::~Payment()
+{
+
+}
