@@ -22,7 +22,7 @@ Payment::Payment(std::string lastName, std::string firstName, std::string middle
     this->Init(lastName, firstName, middleName, salary, taxPercent, startYear, bonusPercent, workedDays, totalWorkingDays);
 }
 
-Payment::Payment(Payment& p)
+Payment::Payment(const Payment& p)
 {
     this->lastName = p.lastName;
     this->firstName = p.firstName;
@@ -99,6 +99,10 @@ double Payment::CalculateNetSalary()
 
 int Payment::CalculateExperience(int currentYear) const
 {
+    if (this->startYear <= 0)
+    {
+        return 0;
+    }
     return (currentYear >= this->startYear) ? (currentYear - this->startYear) : 0;
 }
 
@@ -131,4 +135,65 @@ void Payment::Display() const
 Payment::~Payment()
 {
 
+}
+
+// Перевантаження операцій 
+
+// Присвоєння
+Payment& Payment::operator=(const Payment& p)
+{
+    if (this != &p)
+    {
+        this->lastName = p.lastName;
+        this->firstName = p.firstName;
+        this->middleName = p.middleName;
+        this->salary = p.salary;
+        this->bonusPercent = p.bonusPercent;
+        this->taxPercent = p.taxPercent;
+        this->startYear = p.startYear;
+        this->workedDays = p.workedDays;
+        this->totalWorkingDays = p.totalWorkingDays;
+        this->accruedAmount = p.accruedAmount;
+        this->withheldAmount = p.withheldAmount;
+    }
+    return *this;
+}
+
+// Інкремент ++a: +1 відпрацьований день
+Payment& Payment::operator++()
+{
+    if (this->workedDays < this->totalWorkingDays)
+    {
+        this->workedDays++;
+    }
+    this->CalculateWithheld();
+    return *this;
+}
+
+// Пост інкремент a++: повертає старе значення
+Payment Payment::operator++(int)
+{
+    Payment old(*this);
+    ++(*this);
+    return old;
+}
+
+// Порівняння за сумою до виплати
+bool Payment::operator>(const Payment& p) const
+{
+    return const_cast<Payment*>(this)->CalculateNetSalary() > const_cast<Payment&>(p).CalculateNetSalary();
+}
+
+// Виведення
+std::ostream& operator<<(std::ostream& os, const Payment& p)
+{
+    os << p.toString();
+    return os;
+}
+
+// Введення
+std::istream& operator>>(std::istream& is, Payment& p)
+{
+    p.Read();
+    return is;
 }

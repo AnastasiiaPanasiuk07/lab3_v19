@@ -23,7 +23,7 @@ private:
 public:
 	Payment(); // Конструктор за замовчуванням
 	Payment(std::string lastName, std::string firstName, std::string middleName, double salary, int startYear, double bonusPercent, int workedDays, int totalWorkingDays, double taxPercent = 13.0);
-	Payment(Payment& p);   // Конструктор копіювання 
+	Payment(const Payment& p);   // Конструктор копіювання 
 	~Payment(); // Деструктор
 
 	void Init(std::string lastName, std::string firstName, std::string middleName, double salary, int startYear, double bonusPercent, int workedDays, int totalWorkingDays, double taxPercent = 13.0);
@@ -35,6 +35,14 @@ public:
 	double CalculateWithheld();                     // Обчислення утриманої суми
 	double CalculateNetSalary();                    // Обчислення отриманої суми
 	int CalculateExperience(int currentYear) const; // Обчислення стажу
+
+	// Перевантаження оперецій
+	Payment& operator=(const Payment& p);           // присвоєння
+	Payment& operator++();                          // інкремент ++a
+	Payment operator++(int);                        // пост інкремент a++
+	bool operator>(const Payment& p) const;         // порівняння за сумою до виплати
+	friend std::ostream& operator<<(std::ostream& os, const Payment& p);
+	friend std::istream& operator>>(std::istream& is, Payment& p);
 
 };
 
